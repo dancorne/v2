@@ -376,7 +376,7 @@ func checkOutputFormat(w http.ResponseWriter, r *http.Request) error {
 		}
 		output = r.Form.Get("output")
 	} else {
-		output = request.QueryStringParam(r, "output", "")
+		output = request.QueryStringParam(r, "output", "json")
 	}
 	if output != "json" {
 		err := fmt.Errorf("output only as json supported")
