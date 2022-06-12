@@ -32,7 +32,12 @@ func (m *middleware) clientLogin(w http.ResponseWriter, r *http.Request) {
 	clientIP := request.ClientIP(r)
 	var username, password, output string
 	var integration *model.Integration
-	err := r.ParseForm()
+	var err error
+	if strings.HasPrefix(r.Header.Get("Content-type"), "multipart/form-data") {
+		err = r.ParseMultipartForm(10240)
+	} else {
+		err = r.ParseForm()
+	}
 	if err != nil {
 		logger.Error("[GoogleReader][Login] [ClientIP=%s] Could not parse form", clientIP)
 		json.Unauthorized(w, r)
